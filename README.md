@@ -1,4 +1,4 @@
-# platform
+# Bartender Platform
 
 ## Project setup
 ```
