@@ -6,6 +6,26 @@ const RouteManager = {
     this._routes = r
   },
 
+  filters: {
+    capitalize (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  },
+
+  _plugin (links) {
+    return (Vue) => {
+      Vue.filter('capitalize', this.filters.capitalize)
+
+      Vue.mixin({
+        data: () => ({
+          links: links
+        })
+      })
+    }
+  },
+
   _maskCollection (links, fields) {
     const maskedLinks = []
 
@@ -35,19 +55,7 @@ const RouteManager = {
       maskedRoutes[collection] = this._maskCollection(this._routes[collection], fields)
     })
 
-    return (Vue) => {
-      Vue.filter('capitalize', (value) => {
-        if (!value) return ''
-        value = value.toString()
-        return value.charAt(0).toUpperCase() + value.slice(1)
-      })
-
-      Vue.mixin({
-        data: () => ({
-          links: maskedRoutes
-        })
-      })
-    }
+    return this._plugin(maskedRoutes)
   },
 
   all () {
