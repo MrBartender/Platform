@@ -20,6 +20,9 @@ RouteManager.routes({
       icon: 'info-circle',
       component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
+  ],
+  other: [
+    { path: '/signin', redirect: '/' }
   ]
 })
 

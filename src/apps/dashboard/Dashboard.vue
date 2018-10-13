@@ -2,10 +2,21 @@
   <md-app id="dashboard" md-waterfall md-mode="fixed">
     <!-- Toolbar -->
     <md-app-toolbar class="md-primary">
-      <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
-        <fa-icon icon="bars" class="md-icon"></fa-icon>
-      </md-button>
-      <span class="md-title">Mr. Bartender</span>
+      <div class="md-toolbar-row">
+        <div class="md-toolbar-section-start">
+          <md-button class="md-icon-button" @click="toggleMenu" v-if="!menuVisible">
+            <fa-icon icon="bars" class="md-icon"></fa-icon>
+          </md-button>
+
+          <span class="md-title">Mr. Bartender</span>
+        </div>
+
+        <div class="md-toolbar-section-end">
+          <md-button class="md-icon-button" @click="signOut">
+            <fa-icon icon="sign-out-alt" class="md-icon"></fa-icon>
+          </md-button>
+        </div>
+      </div>
     </md-app-toolbar>
 
     <!-- Sidebar -->

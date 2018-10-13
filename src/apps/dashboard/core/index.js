@@ -9,8 +9,10 @@ import store from './store'
 
 // Register Plugins
 import UIFramework from '@/plugins/ui-framework'
+import SignOut from '@/plugins/auth/signout'
 
 Vue.use(UIFramework)
+Vue.use(SignOut)
 
 export default new Vue({
   router,
