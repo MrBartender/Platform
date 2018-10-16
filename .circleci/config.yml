@@ -44,7 +44,7 @@ jobs:
     steps:
       - run:
           name: Deploy to Firebase
-          command: npm run deploy
+          command: firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2
