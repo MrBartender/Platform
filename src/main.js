@@ -2,9 +2,9 @@
 
 import Vue from 'vue'
 import firebase from 'firebase'
-import fbConfig from '@/../config/firebase'
+import firebaseConfig from '@/../firebase/config'
 
-firebase.initializeApp(fbConfig)
+firebase.initializeApp(firebaseConfig)
 Vue.config.productionTip = false
 
 // Build the app based on auth state
@@ -22,7 +22,7 @@ const buildAppInstance = (user) => {
   }
 }
 
-// get auth state
+// get auth state and build the app accordingly
 firebase.auth().getRedirectResult()
   .then((result) => {
     buildAppInstance(firebase.auth().currentUser)
