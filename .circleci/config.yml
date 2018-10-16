@@ -44,12 +44,12 @@ jobs:
     steps:
       - run:
           name: Deploy to Firebase
-          command: firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
+          command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
 
 workflows:
   version: 2
 
-  -deploy:
+  firebase-deploy:
     jobs:
       - build
       - deploy:
