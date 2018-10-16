@@ -1,15 +1,12 @@
 # Javascript Node CircleCI 2.0 configuration file
 
-defaults: &defaults
-  working_directory: ~/platform
-  docker:
-    - image: circleci/node:10.9
-
 version: 2
 jobs:
   # Build and run test suite
   build:
-    <<: *defaults
+    working_directory: ~/platform
+    docker:
+      - image: circleci/node:10.9
     steps:
       - checkout
       - run: 
@@ -23,11 +20,12 @@ jobs:
           paths:
             - dist
   test:
-    <<: *defaults
+    working_directory: ~/platform
+    docker:
+      - image: circleci/node:10.9
     steps:
       - checkout
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: ~/platform
       - run:
           name: Test Suite
@@ -35,11 +33,12 @@ jobs:
 
   # Deploy to Firebase
   deploy:
-    <<: *defaults
+    working_directory: ~/platform
+    docker:
+      - image: circleci/node:10.9
     steps:
       - checkout
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
           at: ~/platform
       - run:
           name: Deploy to Firebase
