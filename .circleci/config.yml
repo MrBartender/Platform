@@ -1,47 +1,46 @@
 # Javascript Node CircleCI 2.0 configuration file
 
-version: 2
+defaults: &defaults
+  working_directory: ~/platform
+  docker:
+    - image: circleci/node:10.9
 
+version: 2
 jobs:
   # Build and run test suite
   build:
-    docker:
-      - image: circleci/node:10.9
-
-    working_directory: ~/platform
-
+    <<: *defaults
     steps:
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
       - run: 
           name: Install Dependencies
           command: npm install
-
-      - save_cache:
+      - run:
+          name: Build Project
+          command: npm run build
+      - persist_to_workspace:
+          root: ~/platform
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: 
+            - dist
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/platform
+      - run:
           name: Test Suite
           command: npm test
 
   # Deploy to Firebase
   deploy:
-    docker: 
-      - image: circleci/node:10.9
-
-    working_directory: ~/platform
-
+    <<: *defaults
     steps:
+      - checkout
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: ~/platform
       - run:
           name: Deploy to Firebase
           command: ./node_modules/.bin/firebase deploy --token=$FIREBASE_DEPLOY_TOKEN
@@ -49,13 +48,16 @@ jobs:
 workflows:
   version: 2
 
-  firebase-deploy:
+  build_test_deploy:
     jobs:
       - build
+      - test:
+        requires:
+          - build
       - deploy:
           context: Firebase
           requires:
-            - build
+            - test
           filters:
             branches:
               only: master
